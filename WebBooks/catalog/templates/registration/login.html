@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+{% block content %}
+{% if form.errors %}
+<p>Ваші ім'я користувача і пароль не співпали. Будь-ласка, спробуйте ще раз</p>
+{% endif %}
+{% if next %}
+{% if user.is_authenticated %}
+<p>Ви не маєте доступу до цієї сторінки. Увійдіть в систему з інчими параметрами</p>
+{% else %}
+<p>Увійдіть в систему щоб побачити сторінку</p>
+{% endif %}
+{% endif %}
+<form action="{% url 'login' %}" method="post">
+    {%csrf_token %}
+    <table>
+        <tr>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+        </tr>
+    </table>
+    <input type="submit" value="Вхід">
+    <input type="hidden" name="next" value="{{ next }}">
+</form>
+<p><a href="{% url 'password_reset' %}"> Загубили пароль?</a></p>
+{% endblock %}
